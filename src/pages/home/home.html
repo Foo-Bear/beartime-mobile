@@ -14,7 +14,7 @@
 		<template ngFor let-day [ngForOf]="this.userScheduleKeys">
 			<ion-slide style="width: 100%;">
 				<div *ngFor="let block of this.userSchedule[day]">
-					<ion-card (click)="updateLunch(block.name, day)" *ngIf="!block.lunch || block.lunch - 1 == this.lunch">
+					<ion-card (click)="updateLunch(block.name, day)" *ngIf="!block.lunch || block.lunch - 1 == this.lunch[day]">
 						<ion-card-header>
 
 							<span *ngIf="!block.name">

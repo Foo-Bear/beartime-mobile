@@ -16,7 +16,6 @@ export class HomePage {
   userSchedule: Object = {}; //This is a filtered version for lunches.
   userScheduleKeys: string[] = []; // we need the keys to iterate.
   lunch: Object = {};
-  //TODO: multilunch.
 
   constructor(public navCtrl: NavController, api: APIService, public loadingCtrl: LoadingController) {
     //define our loader and present it.
@@ -60,7 +59,7 @@ export class HomePage {
       return
     }
     for (let day of days) {
-      //day is a string YYYY mm dd
+      //day is a string YYYY mm dddd
       this.lunch[day] = window.localStorage.getItem('lunch:' + moment(day, 'YYYY-MM-DD').format('dddd')) || 0
     }
   }
@@ -68,8 +67,8 @@ export class HomePage {
   updateLunch(name: string, day: string) {
     if (name == "Lunch") {
       let dayOfTheWeek = moment(day, 'YYYY-MM-DD').format('dddd')
-      window.localStorage.setItem(`lunch:${dayOfTheWeek}`, (1 - this.lunch[dayOfTheWeek]).toString())
-      this.lunch[dayOfTheWeek] = 1 - this.lunch[dayOfTheWeek] //neat little toggler
+      window.localStorage.setItem(`lunch:${dayOfTheWeek}`, (1 - this.lunch[day]).toString())
+      this.lunch[day] = 1 - this.lunch[day] //neat little toggler
     }
   }
 
