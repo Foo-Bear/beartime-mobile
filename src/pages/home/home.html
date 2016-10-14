@@ -1,0 +1,39 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>BearTime</ion-title>
+		<ion-buttons end>
+			<button ion-button (click)="goToSettings()">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-slides [options]="{pager: true}">
+		<template ngFor let-day [ngForOf]="this.userScheduleKeys">
+			<ion-slide style="width: 100%;">
+				<div *ngFor="let block of this.userSchedule[day]">
+					<ion-card (click)="updateLunch(block.name, day)" *ngIf="!block.lunch || block.lunch - 1 == this.lunch">
+						<ion-card-header>
+
+							<span *ngIf="!block.name">
+          		  <ion-label style="display: inline;">{{block.number}}</ion-label>
+          			<ion-input type="text" 
+            			placeholder="Block {{number}}" 
+            			style="display: inline;"
+            			[(ngModel)]="block.userName"
+            			(change)="updateName(block.number, block.userName)">
+          			</ion-input>
+        			</span>
+							<span *ngIf="block.name">
+          			<h2>{{block.name}}</h2>
+        			</span>
+						</ion-card-header>
+						<ion-card-content><p>{{block.start}} - {{block.end}}</p></ion-card-content>
+					</ion-card>
+				</div>
+			</ion-slide>
+		</template>
+	</ion-slides>
+</ion-content>
