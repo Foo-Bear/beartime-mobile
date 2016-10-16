@@ -10,29 +10,36 @@
 </ion-header>
 
 <ion-content padding>
-	<ion-slides [options]="{pager: true}">
+	<ion-slides #mySlider [options]="{pager: true}">
 		<template ngFor let-day [ngForOf]="this.userScheduleKeys">
-			<ion-slide style="width: 100%;">
-				<div *ngFor="let block of this.userSchedule[day]">
-					<ion-card (click)="updateLunch(block.name, day)" *ngIf="!block.lunch || block.lunch - 1 == this.lunch[day]">
-						<ion-card-header>
+			<ion-slide>
+				<template ngFor let-block [ngForOf]="this.userSchedule[day]">
+					<ion-card 
+						(click)="(block.name == 'Lunch') ? updateLunch(day) : null"
+						*ngIf="!block.lunch || block.lunch - 1 == this.lunch[day]"
+						[style.background] = "colors[block.number - 1]"
+						[@lunchState] = "(block.lunch && block.name == 'Lunch') ? lunchMoveState : false"
+						[@lunchClassState] = "(block.lunch && block.name != 'Lunch') ? lunchClassMoveState : false">
 
+						<ion-card-header>
 							<span *ngIf="!block.name">
-          		  <ion-label style="display: inline;">{{block.number}}</ion-label>
-          			<ion-input type="text" 
-            			placeholder="Block {{number}}" 
-            			style="display: inline;"
-            			[(ngModel)]="block.userName"
-            			(change)="updateName(block.number, block.userName)">
-          			</ion-input>
-        			</span>
+          		  				<ion-label style="display: inline">{{block.number}}</ion-label>
+          						<ion-input type="text" 
+            						placeholder="Block {{number}}" 
+            						style="display: inline"
+            						[(ngModel)]="block.userName"
+            						(change)="updateName(block.number, block.userName)">
+          						</ion-input>
+        					</span>
 							<span *ngIf="block.name">
-          			<h2>{{block.name}}</h2>
-        			</span>
+          						<h2 align="left">{{block.name}}</h2>
+        					</span>
 						</ion-card-header>
-						<ion-card-content><p>{{block.start}} - {{block.end}}</p></ion-card-content>
+						<ion-card-content>
+							<p align="left">{{block.start}} - {{block.end}}</p>
+						</ion-card-content>
 					</ion-card>
-				</div>
+				</template>
 			</ion-slide>
 		</template>
 	</ion-slides>
