@@ -56,8 +56,9 @@ export class HomePage {
   lunch: Object = {};
   lunchMoveState: string = 'static'
   lunchClassMoveState: string = 'static'
-  private Oldcolors: string[] = ['#3F51B5', '#1976D2', '#039BE5', '#00BCD4', '#009688', '#43A047', '#7CB342'] // DELETE
   private colors: string[] = ['#344395', '#1561AC', '#037FBC', '#009AAE', '#007B70', '#37833B', '#669337']
+  private daysOfTheWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+  private selectedDay: string = 'Monday'
   @ViewChild('mySlider') slider: Slides;
 
   constructor(public navCtrl: NavController, api: APIService, public loadingCtrl: LoadingController, time: TimeProvider) {
@@ -145,6 +146,25 @@ export class HomePage {
   updateName(number: number, name: string) {
     window.localStorage.setItem(`class:${number}`, name);
     this.userSchedule = this.retrieveCustomNames(this.userSchedule)
+  }
+  /** Sends the slider to a page
+   * @param day The day of the week to go to. If unspecified, will go to today
+   */
+  sliderGoToPage(day?: string) {
+    if (day) { 
+      let page = moment().day(day).weekday()
+      this.slider.slideTo(page - 1)
+    } else {
+      this.slider.slideTo(moment().weekday() - 1)
+    }
+  }
+  /** Updates the selector at the top of the page.
+   * 
+   */
+  updateSegment() {
+    let currentSlide:number = this.slider.getActiveIndex()
+    let dotw:string = moment().weekday(currentSlide + 1).format('dddd')
+    this.selectedDay = dotw
   }
   //Push the settings page onto the current stack.
   goToSettings() {

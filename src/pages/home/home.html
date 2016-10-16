@@ -7,19 +7,23 @@
       </button>
 		</ion-buttons>
 	</ion-navbar>
+	<ion-segment padding [(ngModel)]="selectedDay">
+		<template ngFor let-dotw [ngForOf]="daysOfTheWeek">
+			<ion-segment-button [value]="dotw"(click)="sliderGoToPage(dotw)">
+				{{dotw}}
+			</ion-segment-button>
+		</template>
+	</ion-segment>
 </ion-header>
 
 <ion-content padding>
-	<ion-slides #mySlider [options]="{pager: true}">
-		<template ngFor let-day [ngForOf]="this.userScheduleKeys">
+	<ion-slides #mySlider (ionDidChange)="updateSegment()">
+		<template ngFor let-day [ngForOf]="userScheduleKeys">
 			<ion-slide>
-				<template ngFor let-block [ngForOf]="this.userSchedule[day]">
-					<ion-card 
-						(click)="(block.name == 'Lunch') ? updateLunch(day) : null"
-						*ngIf="!block.lunch || block.lunch - 1 == this.lunch[day]"
-						[style.background] = "colors[block.number - 1]"
-						[@lunchState] = "(block.lunch && block.name == 'Lunch') ? lunchMoveState : false"
-						[@lunchClassState] = "(block.lunch && block.name != 'Lunch') ? lunchClassMoveState : false">
+				<template ngFor let-block [ngForOf]="userSchedule[day]">
+					<ion-card (click)="(block.name == 'Lunch') ? updateLunch(day) : null" *ngIf="!block.lunch || block.lunch - 1 == lunch[day]"
+						[style.background]="colors[block.number - 1]" [@lunchState]="(block.lunch && block.name == 'Lunch') ? lunchMoveState : false"
+						[@lunchClassState]="(block.lunch && block.name != 'Lunch') ? lunchClassMoveState : false">
 
 						<ion-card-header>
 							<span *ngIf="!block.name">
@@ -28,7 +32,7 @@
             						placeholder="Block {{number}}" 
             						style="display: inline"
             						[(ngModel)]="block.userName"
-            						(change)="updateName(block.number, block.userName)">
+            						(blur)="updateName(block.number, block.userName)">
           						</ion-input>
         					</span>
 							<span *ngIf="block.name">
