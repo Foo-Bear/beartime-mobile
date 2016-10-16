@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Injectable, Output } from '@angular/core';
 import 'rxjs/add/operator/map';
 import moment from 'moment';
 import _ from 'lodash';
@@ -11,7 +11,7 @@ import { Block } from './api-service';
 */
 @Injectable()
 export class TimeProvider {
-  @Output() 
+  @Output()
   week: Object;
   currentClass: Block;
   constructor() {
@@ -24,8 +24,8 @@ export class TimeProvider {
     this.week = week
   }
   /** Gets the current class and returns it */
-  getCurrentClass():Block {
-    let day:Block[] = this.week[moment().format('YYYY-MM-DD')]
+  getCurrentClass(): Block {
+    let day: Block[] = this.week[moment().format('YYYY-MM-DD')]
     let lunch = parseInt(window.localStorage.getItem('lunch:' + moment().format('dddd')))
     let currentClass = _.find(day, item => {
       if (!item.lunch || item.lunch - 1 == lunch) {

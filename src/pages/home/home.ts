@@ -15,7 +15,7 @@ import _ from 'lodash'
       state('moveUp', style({
         transform: 'translateY(-123px)'
       })),
-      state('moveDown',   style({
+      state('moveDown', style({
         transform: 'translateY(123px)'
       })),
       state('static', style({
@@ -29,7 +29,7 @@ import _ from 'lodash'
       state('moveUp', style({
         transform: 'translateY(-97px)'
       })),
-      state('moveDown',   style({
+      state('moveDown', style({
         transform: 'translateY(97px)'
       })),
       state('static', style({
@@ -56,7 +56,7 @@ export class HomePage {
   lunch: Object = {};
   lunchMoveState: string = 'static'
   lunchClassMoveState: string = 'static'
-  private Oldcolors: string[] = ['#3F51B5', '#1976D2', '#039BE5', '#00BCD4', '#009688', '#43A047', '#7CB342']
+  private Oldcolors: string[] = ['#3F51B5', '#1976D2', '#039BE5', '#00BCD4', '#009688', '#43A047', '#7CB342'] // DELETE
   private colors: string[] = ['#344395', '#1561AC', '#037FBC', '#009AAE', '#007B70', '#37833B', '#669337']
   @ViewChild('mySlider') slider: Slides;
 
@@ -74,18 +74,18 @@ export class HomePage {
       this.initLunchObject(this.userScheduleKeys)
       loader.dismissAll()
     })
-    
+
   }
   /** Gets all the custom class names and returns the input week with them injected 
    * @param schedule a week object to inject into.
   */
-  retrieveCustomNames(schedule: Object):Object {
+  retrieveCustomNames(schedule: Object): Object {
     if (!schedule) {
       return
     }
     // first we load up all the custom classes and store them in an array
     let classNameArray: string[] = [];
-    for (let blockNumber of _.range(1,8)) {
+    for (let blockNumber of _.range(1, 8)) {
       classNameArray.push(window.localStorage.getItem(`class:${blockNumber}`))
     }
     // now we iterate over every block and add the userName property.
@@ -133,15 +133,15 @@ export class HomePage {
     setTimeout(() => {
       this.lunch[day] = 1 - this.lunch[day] //neat little toggler
       window.localStorage.setItem(`lunch:${dayOfTheWeek}`, (1 - this.lunch[day]).toString())
-      this.lunchMoveState = 'static'   
-      this.lunchClassMoveState = 'static'   
-    },200)
+      this.lunchMoveState = 'static'
+      this.lunchClassMoveState = 'static'
+    }, 200)
   }
 
   /** Change the stored name for a class 
    * @param number The block number of the class that will be changed.
    * @param name The new name of the class to be stored.
-  */ 
+  */
   updateName(number: number, name: string) {
     window.localStorage.setItem(`class:${number}`, name);
     this.userSchedule = this.retrieveCustomNames(this.userSchedule)
@@ -150,5 +150,5 @@ export class HomePage {
   goToSettings() {
     this.navCtrl.push(SettingsPage)
   }
-  
+
 }

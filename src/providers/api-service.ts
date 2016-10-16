@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the APIService provider.
@@ -38,7 +38,7 @@ export class APIService {
   data: Week;
   //TODO: use observables better
   /** Gets the current week and returns a promise */
-  getWeek():Observable<Week> {
+  getWeek(): Observable<Week> {
     //TODO: better refresh calling (figure out when to grab)
     return this.http.get('http://beartime.blakeschool.org/api/week')
       .map(res => res.json())
