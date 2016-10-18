@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content padding>
-	<ion-slides #mySlider (ionDidChange)="updateSegment()">
+	<ion-slides #mainSlider (ionDidChange)="updateSegment()">
 		<template ngFor let-day [ngForOf]="userScheduleKeys">
 			<ion-slide>
 				<template ngFor let-block [ngForOf]="userSchedule[day]">

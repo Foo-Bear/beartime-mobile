@@ -1,4 +1,4 @@
-import { Component, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, ViewChild, trigger, state, style, transition, animate, AfterViewInit } from '@angular/core';
 import moment from 'moment';
 import { APIService, Block } from '../../providers/api-service';
 import { TimeProvider } from '../../providers/time-provider';
@@ -41,25 +41,27 @@ import _ from 'lodash'
     ])
   ]
 })
+
 /** 
  * TODO: current class/remaining time/passing time.
  * TODO: better IOS theming? Softer accent colors
- * TODO: go to current day in slides (should be easy)
+ * TODO: fix slider initialization
+ * TODO: http error handling (and maybe cache?)
 */
 
-/**
- * Returns the HomePage
- */
+/** Returns the HomePage */
 export class HomePage {
   userSchedule: Object = {}; //This is a filtered version for lunches.
   userScheduleKeys: string[] = []; // we need the keys to iterate.
   lunch: Object = {};
-  lunchMoveState: string = 'static'
-  lunchClassMoveState: string = 'static'
+  private lunchMoveState: string = 'static'
+  private lunchClassMoveState: string = 'static'
   private colors: string[] = ['#344395', '#1561AC', '#037FBC', '#009AAE', '#007B70', '#37833B', '#669337']
   private daysOfTheWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-  private selectedDay: string = 'Monday'
-  @ViewChild('mySlider') slider: Slides;
+  private today: string = moment().format('dddd')
+  private selectedDay: string
+  private time: TimeProvider
+  @ViewChild('mainSlider') slider: Slides;
 
   constructor(public navCtrl: NavController, api: APIService, public loadingCtrl: LoadingController, time: TimeProvider) {
     //define our loader and present it.
@@ -67,15 +69,30 @@ export class HomePage {
       content: 'Please wait...'
     })
     loader.present()
+    //set the selectedDay or default it
+    if (moment().weekday() > 5) {
+      // it is sat or sun so default to Mon
+      this.selectedDay = 'Monday'
+    } else {
+      this.selectedDay = this.today
+    }
     //get data from the service and process it
     api.getWeek().subscribe(data => {
       time.setWeek(data)
+      time.initTimer()
       this.userSchedule = this.retrieveCustomNames(data);
       this.userScheduleKeys = Object.keys(this.userSchedule)
       this.initLunchObject(this.userScheduleKeys)
       loader.dismissAll()
     })
+    this.time = time
+    this.time.countdownStream
+      .subscribe(arg => console.log(arg));
+    
+  }
 
+  ngOnInit() {
+    this.time.countdownStream.subscribe(thing => console.log(thing))
   }
   /** Gets all the custom class names and returns the input week with them injected 
    * @param schedule a week object to inject into.
