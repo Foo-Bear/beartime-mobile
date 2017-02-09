@@ -26,7 +26,7 @@ export class TimeProvider {
   public currentCountdown: Countdown
   private timer: Observable<number>
   constructor() {
-    console.log('IT IS NOW TIME FOR YOU TO DIEEEEEEEEEEE');
+    console.log('DO OR DO NOT THERE IS NO TIIIIIME');
   }
   /** Sets the week that is used to calculate the current class 
    * @param week The week to load in memory
@@ -51,8 +51,8 @@ export class TimeProvider {
       } else {
         newCountdown.remainingTime = moment().diff(moment(newCountdown.end, 'hh:mma'))
       }
-      this.currentCountdown = newCountdown
-      this.countdownStream.next(this.currentCountdown)
+      this.currentCountdown = newCountdown;
+      this.countdownStream.next(this.currentCountdown);
       return
     }
     console.log('not counting down, recalculating')
